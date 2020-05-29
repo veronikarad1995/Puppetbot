@@ -1,0 +1,77 @@
+<html>
+   <head>
+   	<!-- load the paho library -->
+   	<script src="https://assets.shiftr.io/js/mqtt-2.9.0.js"></script>
+
+   	<script type="text/javascript">
+
+   		var host = "broker.shiftr.io";//"broker.shiftr.io";
+   		var user = "271569b3";
+   		var pass = "0290c99fdd85e041";
+   		var clientID = "ArduinoVeronika"
+   		var topic = "/button4"
+   		var client;
+
+   		var vid = document.getElementById("myVideo");
+   		vid.controls = false;
+
+   		function init() {
+   			println("Connecting to "+host+" as "+clientID);
+
+   			client = mqtt.connect('mqtt://'+user+':'+pass+'@broker.shiftr.io', {
+			  clientId: clientID
+			});	
+
+		    // Set callback handlers
+		    client.on('connect', onConnect);		    
+		    client.on('message', onMessage);
+   		}
+			
+   		// Called when the client connects
+		function onConnect() {
+		    println('Connected. Subscribing to '+topic);
+		    client.subscribe(topic);
+		    document.getElementById('sendButton0').disabled = false;
+		    document.getElementById('sendButton1').disabled = false;
+		}
+
+		function sendMessage(msg) {
+			println("Sending "+msg);
+			client.publish(topic, msg);
+		}
+
+		// Called when a message arrives
+		function onMessage(topic, message) {
+			var msg = message.toString();
+		    println('Message received from topic: ' + topic + ': ' + msg);
+		    if (msg=='0') {
+		    	document.getElementById("myVideo").pause();
+		    }
+		    if (msg=='1') {
+		    	document.getElementById("myVideo").currentTime=0;
+		    	document.getElementById("myVideo").play();
+		    }
+		}
+
+   		function println(msg) {
+   			document.getElementById('messages').innerHTML+='<span>'+msg+'</span><br/>';
+   		}
+
+   	</script>
+   </head>
+   <body>
+     <h1>Shiftr MQTT demo</h1>
+     <input type="button" id="connectButton" onclick="init();" value="connect" enabled/>
+     <input type="button" id="sendButton0" onclick="sendMessage('0');" value="send '0'" disabled/>
+     <input type="button" id="sendButton1" onclick="sendMessage('1');" value="send '1'" disabled/>
+     <p/>
+     <div id="messages"></div>
+     <div id="videodiv" style="position: fixed; right:100px; top:50px; height:640px; width:360px; border: 3px solid #111111">
+     	<video width="360" height="640" id="myVideo">
+		  <source src="Waving1.mp4" type="video/mp4">
+		Your browser does not support the video tag.
+		</video>
+     </div>
+ 	 </div>
+   </body>
+</html>
