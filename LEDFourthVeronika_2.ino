@@ -19,7 +19,7 @@
 
 // "" set your wifi name and password + broker key and secret of shiftr.io. Device name you see on shiftr.io coming up.
 const char WIFI_SSID[] = "Ziggo4612D9A"; // WiFI ssid
-const char WIFI_PASS[] = "Jyjjmkyvc2nk"; //WiFI password
+const char WIFI_PASS[] = "..."; //WiFI password
 const char mqttServer[] = "broker.shiftr.io"; // broker, with shiftr.io it's "broker.shiftr.io"
 const int mqttServerPort = 1883; // broker mqtt port
 const char key[] = "271569b3"; // broker key
